@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Morada - JavaScript</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0e6ff; /* Fondo lila muy suave */
+        }
+        .container { 
+            max-width: 450px; 
+            width: 90%;
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(111, 66, 193, 0.2); /* Sombra morada */
+            border: 1px solid #dcd0ff;
+        }
+        h2 {
+            color: #6f42c1; /* Morado principal */
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #5a3a91; }
+        input[type="number"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e0d4f7; 
+            border-radius: 8px; 
+            box-sizing: border-box; /* Importante para el padding */
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #a389d4; /* Morado al enfocar */
+        }
+        .btn-group { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            margin-top: 25px; 
+        }
+        button { 
+            padding: 12px; 
+            border: none; 
+            border-radius: 8px; 
+            background-color: #8561c5; /* Morado medio */
+            color: white; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover { background-color: #6f42c1; }
+        button:active { transform: scale(0.98); }
+
+        .btn-nav-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .btn-nav { 
+            background-color: #5a3a91; /* Morado oscuro */
+            width: 100%; 
+            padding: 15px;
+            font-size: 16px;
+        }
+        .btn-nav:hover { background-color: #452a71; }
+
+        #resultado { 
+            margin-top: 25px; 
+            padding: 15px; 
+            background-color: #f4f0ff; 
+            border-left: 5px solid #8561c5; 
+            border-radius: 4px;
+            font-weight: bold; 
+            color: #5a3a91;
+            font-size: 18px;
+            text-align: center;
+            min-height: 24px;
+        }
+        a { text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calculadora Básica</h2>
+    
+    <div class="form-group">
+        <label for="num1">Número 1 / Base / Factorial:</label>
+        <input type="number" id="num1" placeholder="Ej. 5">
+    </div>
+    
+    <div class="form-group">
+        <label for="num2">Número 2 / Exponente:</label>
+        <input type="number" id="num2" placeholder="Ej. 2">
+    </div>
+
+    <div class="btn-group">
+        <button onclick="calcular('suma')">Sumar (+)</button>
+        <button onclick="calcular('resta')">Restar (-)</button>
+        <button onclick="calcular('multi')">Multiplicar (*)</button>
+        <button onclick="calcular('divi')">Dividir (/)</button>
+        <button onclick="calcular('potencia')">Potencia (^)</button>
+        <button onclick="calcular('factorial')">Factorial (!)</button>
+    </div>
+
+    <div id="resultado">Esperando operación...</div>
+
+    <div class="btn-nav-container">
+        <a href="edad.html"><button class="btn-nav">Ir al Calculador de Edad ➔</button></a>
+    </div>
+</div>
+
+<script>
+    function calcular(operacion) {
+        // Manipulación del DOM: Obtenemos los valores
+        const n1 = parseFloat(document.getElementById('num1').value);
+        const n2 = parseFloat(document.getElementById('num2').value);
+        const divResultado = document.getElementById('resultado');
+        
+        // Validación básica
+        if (isNaN(n1)) {
+            divResultado.innerText = "⚠️ Ingresa el primer número.";
+            return;
+        }
+
+        let res = 0;
+
+        // Estructura de control switch
+        switch(operacion) {
+            case 'suma':
+                if (isNaN(n2)) return divResultado.innerText = "⚠️ Ingresa el segundo número";
+                res = n1 + n2;
+                break;
+            case 'resta':
+                if (isNaN(n2)) return divResultado.innerText = "⚠️ Ingresa el segundo número";
+                res = n1 - n2;
+                break;
+            case 'multi':
+                if (isNaN(n2)) return divResultado.innerText = "⚠️ Ingresa el segundo número";
+                res = n1 * n2;
+                break;
+            case 'divi':
+                if (isNaN(n2)) return divResultado.innerText = "⚠️ Ingresa el segundo número";
+                if (n2 === 0) {
+                    res = "❌ Error: División por cero";
+                } else {
+                    res = n1 / n2;
+                }
+                break;
+            case 'potencia':
+                if (isNaN(n2)) return divResultado.innerText = "⚠️ Ingresa el exponente";
+                res = Math.pow(n1, n2);
+                break;
+            case 'factorial':
+                if (n1 < 0) {
+                    res = "❌ No existe factorial de negativos";
+                } else if (!Number.isInteger(n1)) {
+                    res = "❌ Debe ser un número entero";
+                } else {
+                    // Bucle for
+                    let f = 1;
+                    for (let i = 1; i <= n1; i++) {
+                        f *= i;
+                    }
+                    res = f;
+                }
+                break;
+        }
+
+        // Actualizamos el DOM con el resultado
+        divResultado.innerText = "Resultado: " + res;
+    }
+</script>
+
+</body>
+</html>

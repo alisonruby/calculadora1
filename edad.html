@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculador de Edad Morado - JavaScript</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0e6ff; /* Fondo lila suave */
+        }
+        .container { 
+            max-width: 450px; 
+            width: 90%;
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(111, 66, 193, 0.2); 
+            border: 1px solid #dcd0ff;
+        }
+        h2 {
+            color: #6f42c1; 
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; color: #5a3a91; }
+        input[type="date"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e0d4f7; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            color: #5a3a91;
+        }
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #a389d4;
+        }
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 8px; 
+            background-color: #8561c5; 
+            color: white; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover { background-color: #6f42c1; }
+        button:active { transform: scale(0.98); }
+
+        .btn-back-container {
+            margin-top: 25px;
+            text-align: center;
+        }
+        .btn-back { 
+            background-color: #a389d4; /* Un morado más claro para volver */
+            width: auto;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .btn-back:hover { background-color: #8561c5; }
+
+        #resultadoEdad { 
+            margin-top: 30px; 
+            padding: 15px; 
+            background-color: #f4f0ff; 
+            border-left: 5px solid #8561c5; 
+            border-radius: 4px;
+            font-weight: bold; 
+            color: #5a3a91;
+            font-size: 20px;
+            text-align: center;
+            min-height: 28px;
+        }
+        a { text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calculador de Edad</h2>
+    
+    <div class="form-group">
+        <label for="fechaNacimiento">Selecciona tu fecha de nacimiento:</label>
+        <input type="date" id="fechaNacimiento">
+    </div>
+
+    <button onclick="calcularEdad()">Calcular Edad Actual</button>
+
+    <div id="resultadoEdad">Tu edad aparecerá aquí.</div>
+
+    <div class="btn-back-container">
+        <a href="index.html"><button class="btn-back">⬅ Volver a la Calculadora</button></a>
+    </div>
+</div>
+
+<script>
+    function calcularEdad() {
+        const inputFecha = document.getElementById('fechaNacimiento').value;
+        const divResultado = document.getElementById('resultadoEdad');
+
+        // Validación
+        if (inputFecha === "") {
+            divResultado.innerText = "⚠️ Selecciona una fecha.";
+            return;
+        }
+
+        const fechaNac = new Date(inputFecha);
+        const fechaActual = new Date();
+
+        // Cálculo base
+        let edad = fechaActual.getFullYear() - fechaNac.getFullYear();
+        
+        // Ajuste por mes y día
+        const mesDiferencia = fechaActual.getMonth() - fechaNac.getMonth();
+        const diaDiferencia = fechaActual.getDate() - fechaNac.getDate();
+
+        if (mesDiferencia < 0 || (mesDiferencia === 0 && diaDiferencia < 0)) {
+            edad--;
+        }
+
+        // Validación lógica
+        if (edad < 0) {
+            divResultado.innerText = "¡Vaya! Vienes del futuro. 🚀";
+        } else {
+            divResultado.innerText = "Tienes: " + edad + " años 🎉";
+        }
+    }
+</script>
+
+</body>
+</html>
